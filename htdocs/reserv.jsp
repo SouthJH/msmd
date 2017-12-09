@@ -1,10 +1,18 @@
-﻿<!doctype html>
+<!doctype html>
 <head>
 	<title>Title</title>
 	<meta charset="UTF-8" />
 	
+	<script src="reserv.js" ></script>
+	<script>
+		window.onload = function() {
+			select_seat_init();
+		}
+		selected_seats = [];
+	</script>
 </head>
-<body>	
+<body>
+	
 	<form action="reserv.jsp", method="POST">
 		<select name="time" >
 		<%@ page import="java.sql.*" %>
@@ -69,6 +77,8 @@
 				
 				ResultSet rs = stmt.executeQuery(sql);
 				String result = "";
+				char none = 'n';
+				char A = 'A';
 				
 				if(rs != null) {
 					if(rs.next()) {
@@ -82,12 +92,14 @@
 				for(int idx = 0; idx < 12; ++idx){ %>
 					<tr>
 				<%	for(int jdx = 0; jdx < 13; ++jdx){
-						if(result.charAt(idx * 13 + jdx) == 'n'){ %>
-							<td>
-								<%= (char)('A' + idx) %><%= (jdx < 10)? 0:1 %><%= jdx%10%>
+						if(result.charAt(idx * 13 + jdx) == none){ %>
+							<td id="<%=idx%>,<%=jdx%>" >
+								<%= (char)(A + idx) %><%= (jdx < 10)? 0:1 %><%= jdx%10%>
 							</td>
 						<%} else { %>
-							<td>X</td>
+							<td>
+								X
+							</td>
 						<%}
 					} %>
 					</tr>
@@ -100,5 +112,7 @@
 		}
 		%>
 	</table>
+	
+	<div id="selection_result"></div>
 	
 </body>
